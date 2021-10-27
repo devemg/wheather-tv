@@ -14,9 +14,56 @@
   align-items: center;
 }
 
+.image-container .image {
+  width: 50%;
+}
+
+.time {
+  color: #FFF;
+  font-weight: bold;
+  font-size: 4vw;
+}
+
 .info-container {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding-left: 2vw;
+}
+
+.info *{
+  color: #FFF;
+  margin: 0;
+  padding: 0;
+}
+
+.info {
+  padding: 0 0 1vw 0;
+}
+
+.info h1 {
+  font-size: 4vw;
+  font-weight: bold;
+}
+
+.info h2 {
+  font-size: 3vw;
+  font-weight: bold;
+}
+
+.info h3 {
+  font-size: 2vw;
+  font-weight: bold;
+}
+
+.date * {
+  color: #FFF;
+  margin: 0;
+  padding: 0;
+}
+
+.date {
+  padding: 1vw 0 0 0;
+  font-size: 2vw;
 }
