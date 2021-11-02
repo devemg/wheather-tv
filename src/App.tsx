@@ -73,7 +73,7 @@ function App() {
     day: '',
     dayOfWeek: '',
   });
-  const [time, setTime] = useState({ hours: 0, minutes:0, isAM: true, isMorning: false });
+  const [time, setTime] = useState({ hours: '', minutes:'', isAM: true, isMorning: false });
   const [language] = useState('es');
   const [wheather, setWheater] = useState({
     location: { city: '', country: '', region: '' },
@@ -96,8 +96,8 @@ function App() {
         dayOfWeek: date.format('dddd'),
       });
       setTime({ 
-        hours: Number(date.format('hh')), 
-        minutes: Number(date.format('mm')), 
+        hours: date.format('hh'), 
+        minutes: date.format('mm'), 
         isAM:date.format('A') == 'AM',
         isMorning: date.hour() < 18
       });
@@ -106,7 +106,8 @@ function App() {
         location: { city: response.city, country: response.country, region: response.regionName },
         celsius: `${responseWheather.main.temp} °C`,
         wheatherDescription: responseWheather.weather[0].description,
-        wheatherCode: states[Math.floor(Math.random() * states.length)] //responseWheather.weather[0].id
+        wheatherCode: responseWheather.weather[0].id
+        //wheatherCode: states[Math.floor(Math.random() * states.length)]
       });
       setTimeout(() => {
         setLoading(false);  
