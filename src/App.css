@@ -6,6 +6,22 @@
   background: linear-gradient(236.65deg, #4B79A1 1.05%, #1D384F 53.56%, #1D384F 63.5%, #1D384F 72.15%, #1D384F 83.14%, #1D384F 93.48%);
 }
 
+.background-night {
+  background: linear-gradient(236.65deg, #4B79A1 1.05%, #1D384F 53.56%, #1D384F 63.5%, #1D384F 72.15%, #1D384F 83.14%, #1D384F 93.48%);
+}
+
+.background-gray-night {
+  background: linear-gradient(236.65deg, #4B79A1 1.05%, #1D384F 53.56%, #1D384F 63.5%, #1D384F 72.15%, #1D384F 83.14%, #1D384F 93.48%);}
+
+.background-gray-day {
+  background: linear-gradient(67.59deg, #1B3246 24.02%, #355A7A 61.68%, #2980B9 82.69%);
+}
+
+.background-day {
+  background: linear-gradient(236.65deg, #FFFFFF 1.05%, #6DD5FA 15.78%, #2980B9 71.14%, #2980B9 93.46%, #2980B9 93.47%, #2980B9 93.48%);
+}
+
+
 .image-container {
   flex: 1;
   display: flex;
