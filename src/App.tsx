@@ -15,9 +15,8 @@ function App() {
     month: '',
     day: '',
     dayOfWeek: '',
-    isMorning: false
   });
-  const [time, setTime] = useState({ hours: 0, minutes:0, isAM: true });
+  const [time, setTime] = useState({ hours: 0, minutes:0, isAM: true, isMorning: false });
   const [language] = useState('es');
   const [wheather, setWheater] = useState({
     location: { city: '', country: '', region: '' },
@@ -40,24 +39,28 @@ function App() {
         month: date.format('MMMM'),
         day: date.day().toString(),
         dayOfWeek: date.format('dddd'),
-        isMorning: false
       });
-      setTime({ hours: Number(date.format('hh')), minutes: Number(date.format('mm')), isAM:date.format('A') == 'AM' });
+      setTime({ 
+        hours: Number(date.format('hh')), 
+        minutes: Number(date.format('mm')), 
+        isAM:date.format('A') == 'AM',
+        isMorning: date.hour() + 5 < 18
+      });
       // set wehather
       setWheater({
         location: { city: response.city, country: response.country, region: response.regionName },
         celsius: `${responseWheather.main.temp} °C`,
         wheatherDescription: responseWheather.weather[0].description,
-        wheatherCode: responseWheather.weather[0].id
+        wheatherCode: 800 //responseWheather.weather[0].id
       });
     })
     })
   }, [language]); // se ejecuta una sola vez al renderizar el componente.
  
   return (
-    <div className="background background-day">
+    <div className={getBackground(wheather.wheatherCode, time.isMorning)}>
       <div className="image-container">
-          <img className="image" src={getImageByStatus(wheather.wheatherCode, time.isAM)} alt="image" /> 
+          <img className="image" src={getImageByStatus(wheather.wheatherCode, time.isMorning)} alt="image" /> 
           <p className="time">{time.hours}:{time.minutes} {time.isAM? 'AM' : 'PM'}</p>
       </div>
       <div className="info-container">
@@ -77,7 +80,13 @@ function App() {
     </div>
   );  
 }
-
+/**
+ * Format the date by language 
+ * @param day 
+ * @param month 
+ * @param language 
+ * @returns 
+ */
 function getDateByLanguage(day: string, month: string, language: string){
   switch(language) {
     case 'es': return `${day} de ${month}`;
@@ -86,22 +95,49 @@ function getDateByLanguage(day: string, month: string, language: string){
   }
 }
 
-function isAM(currentHour:number){
-  return currentHour >= 0 && currentHour < 12;
+/**
+ * Get background gradient by the code of wheater and if is day or night
+ * @param code 
+ * @param isMorning 
+ * @returns 
+ */
+function getBackground(code: number, isMorning: boolean) {
+  let background = '';
+
+  if (isMorning) {
+    if (code >= 800) {
+      background = 'background-day';
+    } else {
+      background = 'background-gray-day';
+    }
+  } else {
+    if (code >= 800) {
+      background = 'background-night';
+    } else {
+      background = 'background-gray-night';
+    }
+  }
+  return 'background '+ background;
 }
 
-function getImageByStatus(code: number, isAM: boolean) {
+/**
+ * Get image by wheather code and if is day or night
+ * @param code 
+ * @param isMorning 
+ * @returns 
+ */
+function getImageByStatus(code: number, isMorning: boolean) {
   switch (code) {
     // CLOUDS
     case 801:
     case 802:
-      return isAM ? cloudsDay : cloudsNight;
+      return isMorning ? cloudsDay : cloudsNight;
     case 803:
     case 804: 
       return clouds;
     // CLEAR
     case 800: 
-      return isAM ? clearDay : clearNight;
+      return isMorning ? clearDay : clearNight;
     default: 
     // SNOW
     if (code >= 600 && code <=622) {
@@ -110,8 +146,12 @@ function getImageByStatus(code: number, isAM: boolean) {
   }
   return clouds;
 }
-/*
 
+/**
+ * Generate Message by hour
+ * @returns 
+ */
+/*
 function generateGreetings(){
   const currentHour = moment().hour();
   if (currentHour >= 3 && currentHour < 12){
