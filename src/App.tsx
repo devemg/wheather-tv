@@ -44,14 +44,14 @@ function App() {
         hours: Number(date.format('hh')), 
         minutes: Number(date.format('mm')), 
         isAM:date.format('A') == 'AM',
-        isMorning: date.hour() + 5 < 18
+        isMorning: date.hour() < 18
       });
       // set wehather
       setWheater({
         location: { city: response.city, country: response.country, region: response.regionName },
         celsius: `${responseWheather.main.temp} °C`,
         wheatherDescription: responseWheather.weather[0].description,
-        wheatherCode: 800 //responseWheather.weather[0].id
+        wheatherCode: responseWheather.weather[0].id
       });
     })
     })
@@ -117,6 +117,7 @@ function getBackground(code: number, isMorning: boolean) {
       background = 'background-gray-night';
     }
   }
+  console.log(background);
   return 'background '+ background;
 }
 
