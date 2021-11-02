@@ -66,6 +66,7 @@ const states = [
 
 
 function App() {
+  const [isLoading, setLoading] = useState(true);
   const [date, setDate] = useState({
     year: '',
     month: '',
@@ -80,14 +81,12 @@ function App() {
     wheatherCode: 0,
     celsius: ''
   });
-  //const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     moment.locale(language);
     fetch(`http://ip-api.com/json?lang=${language}`).then(res => res.json()).then((response) => {
       fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${response.lat}&lon=${response.lon}&units=metric&lang=${language}&APPID=ee054a87257ae80863574e6c33b0ab77`)
       .then(res1 => res1.json()).then((responseWheather) => {
-      //setLoading(false);
       //set date and time
       const date = moment();
       setDate({
@@ -109,12 +108,14 @@ function App() {
         wheatherDescription: responseWheather.weather[0].description,
         wheatherCode: states[Math.floor(Math.random() * states.length)] //responseWheather.weather[0].id
       });
-      console.log(wheather);
+      setTimeout(() => {
+        setLoading(false);  
+      }, 1000);
     })  
     })
   }, [language]); // se ejecuta una sola vez al renderizar el componente.
  
-  return (
+  return !isLoading ? (
     <div className={getBackground(wheather.wheatherCode, time.isMorning)}>
       <div className="image-container">
           <img className="image" src={getImageByStatus(wheather.wheatherCode, time.isMorning)} alt="image" /> 
@@ -135,7 +136,10 @@ function App() {
         </div>
       </div>
     </div>
-  );  
+  ) : <div className="background-loading">
+    <h1>Wheather TV</h1>
+    <img className="image-loading" src={clearDay} alt="image-loading" /> 
+  </div>;  
 }
 /**
  * Format the date by language 
