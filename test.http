@@ -1,0 +1,4 @@
+GET http://api.openweathermap.org/data/2.5/weather?lat=14.634300&lon=-90.5&APPID=ee054a87257ae80863574e6c33b0ab77
+
+###
+GET https://ipapi.co/json/

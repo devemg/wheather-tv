@@ -36,6 +36,7 @@
   color: #FFF;
   margin: 0;
   padding: 0;
+  text-transform: capitalize;
 }
 
 .info {
