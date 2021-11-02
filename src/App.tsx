@@ -4,10 +4,66 @@ import clearNight from './img-states/clear-sky-night.png';
 import cloudsDay from './img-states/few-clouds-day.png';
 import cloudsNight from './img-states/few-clouds-night.png';
 import clouds from './img-states/clouds.png';
+import badSnow from './img-states/bad-snow.png';
+import lightRainDay from './img-states/light-rain-day.png';
+import lightRainNight from './img-states/light-rain-night.png';
+import rain from './img-states/rain.png';
+import snowDay from './img-states/snow-day.png';
+import snowNight from './img-states/snow-night.png';
+import snow from './img-states/snow.png';
+import storm from './img-states/storm.png';
 
 import './App.css';
 import moment from 'moment';
 import 'moment/locale/es';
+const states = [
+200,
+201,
+202,
+210,
+211,
+212,
+221,
+230,
+231,
+232,
+300,
+301,
+302,
+310,
+311,
+312,
+313,
+314,
+321,
+500,
+201,
+502,
+503,
+504,
+511,
+520,
+521,
+522,
+531,
+600,
+601,
+602,
+611,
+612,
+613,
+615,
+616,
+620,
+621,
+622,
+800,
+801,
+802,
+803,
+804,
+];
+
 
 function App() {
   const [date, setDate] = useState({
@@ -51,9 +107,10 @@ function App() {
         location: { city: response.city, country: response.country, region: response.regionName },
         celsius: `${responseWheather.main.temp} °C`,
         wheatherDescription: responseWheather.weather[0].description,
-        wheatherCode: responseWheather.weather[0].id
+        wheatherCode: states[Math.floor(Math.random() * states.length)] //responseWheather.weather[0].id
       });
-    })
+      console.log(wheather);
+    })  
     })
   }, [language]); // se ejecuta una sola vez al renderizar el componente.
  
@@ -139,10 +196,31 @@ function getImageByStatus(code: number, isMorning: boolean) {
     // CLEAR
     case 800: 
       return isMorning ? clearDay : clearNight;
+    // RAIN
+    case 200:
+    case 201:
+    case 500:
+    case 501:
+    case 502:
+    case 503:
+    case 504:
+      return isMorning ? lightRainDay : lightRainNight;
+    case 600:
+    case 601:
+    case 602:
+        return isMorning? snowDay : snowNight; 
     default: 
     // SNOW
     if (code >= 600 && code <=622) {
-      return clouds;
+      return snow;
+    }
+    // Thunderstorm
+    if (code >= 200 && code <=232) {
+      return storm;
+    }
+    // raining 
+    if (code >=300 && code <=321 || code >=500 && code <=531) {
+      return rain;
     }
   }
   return clouds;
