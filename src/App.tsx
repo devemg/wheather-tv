@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react';
-import moon from './img-states/moon.png';
-import RAINY from './img-states/rainy-day.png';
-import CLOUDS from './img-states/rain.png';
+import clearDay from './img-states/clear-sky-day.png';
+import clearNight from './img-states/clear-sky-night.png';
+import cloudsDay from './img-states/few-clouds-day.png';
+import cloudsNight from './img-states/few-clouds-night.png';
+import clouds from './img-states/clouds.png';
+
 import './App.css';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -39,7 +42,7 @@ function App() {
         dayOfWeek: date.format('dddd'),
         isMorning: false
       });
-      setTime({ hours: date.hour(), minutes: date.minute(), isAM: isAM(date.hour())});
+      setTime({ hours: Number(date.format('hh')), minutes: Number(date.format('mm')), isAM:date.format('A') == 'AM' });
       // set wehather
       setWheater({
         location: { city: response.city, country: response.country, region: response.regionName },
@@ -54,7 +57,7 @@ function App() {
   return (
     <div className="background background-day">
       <div className="image-container">
-          <img className="image" src={getImageByStatus(wheather.wheatherCode)} alt="image" /> 
+          <img className="image" src={getImageByStatus(wheather.wheatherCode, time.isAM)} alt="image" /> 
           <p className="time">{time.hours}:{time.minutes} {time.isAM? 'AM' : 'PM'}</p>
       </div>
       <div className="info-container">
@@ -87,25 +90,25 @@ function isAM(currentHour:number){
   return currentHour >= 0 && currentHour < 12;
 }
 
-function getImageByStatus(code: number) {
+function getImageByStatus(code: number, isAM: boolean) {
   switch (code) {
     // CLOUDS
     case 801:
     case 802:
-      return RAINY;
+      return isAM ? cloudsDay : cloudsNight;
     case 803:
     case 804: 
-      return CLOUDS;
+      return clouds;
     // CLEAR
     case 800: 
-      return CLOUDS;
+      return isAM ? clearDay : clearNight;
     default: 
     // SNOW
     if (code >= 600 && code <=622) {
-      return CLOUDS;
+      return clouds;
     }
   }
-  return moon;
+  return clouds;
 }
 /*
 
