@@ -4,7 +4,6 @@ import clearNight from './img-states/clear-sky-night.png';
 import cloudsDay from './img-states/few-clouds-day.png';
 import cloudsNight from './img-states/few-clouds-night.png';
 import clouds from './img-states/clouds.png';
-import badSnow from './img-states/bad-snow.png';
 import lightRainDay from './img-states/light-rain-day.png';
 import lightRainNight from './img-states/light-rain-night.png';
 import rain from './img-states/rain.png';
@@ -12,57 +11,10 @@ import snowDay from './img-states/snow-day.png';
 import snowNight from './img-states/snow-night.png';
 import snow from './img-states/snow.png';
 import storm from './img-states/storm.png';
-
+import axios from 'axios';
 import './App.css';
 import moment from 'moment';
 import 'moment/locale/es';
-const states = [
-200,
-201,
-202,
-210,
-211,
-212,
-221,
-230,
-231,
-232,
-300,
-301,
-302,
-310,
-311,
-312,
-313,
-314,
-321,
-500,
-201,
-502,
-503,
-504,
-511,
-520,
-521,
-522,
-531,
-600,
-601,
-602,
-611,
-612,
-613,
-615,
-616,
-620,
-621,
-622,
-800,
-801,
-802,
-803,
-804,
-];
 
 
 function App() {
@@ -84,10 +36,14 @@ function App() {
 
   useEffect(() => {
     moment.locale(language);
-    fetch(`http://ip-api.com/json?lang=${language}`).then(res => res.json()).then((response) => {
-      fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${response.lat}&lon=${response.lon}&units=metric&lang=${language}&APPID=ee054a87257ae80863574e6c33b0ab77`)
-      .then(res1 => res1.json()).then((responseWheather) => {
-      //set date and time
+    axios.get(`http://ip-api.com/json?lang=${language}`)
+    .then(r => r.data)
+    .then(response => {
+      console.log('Location: ', response);
+      axios.get(`http://api.openweathermap.org/data/2.5/weather?lat=${response.lat}&lon=${response.lon}&units=metric&lang=${language}&APPID=ee054a87257ae80863574e6c33b0ab77`)
+    .then(r => r.data)
+    .then(responseWheather => {
+      console.log('Wheather: ', responseWheather);
       const date = moment();
       setDate({
         year: date.year().toString(),
@@ -98,7 +54,7 @@ function App() {
       setTime({ 
         hours: date.format('hh'), 
         minutes: date.format('mm'), 
-        isAM:date.format('A') == 'AM',
+        isAM:date.format('A') === 'AM',
         isMorning: date.hour() < 18
       });
       // set wehather
@@ -112,19 +68,19 @@ function App() {
       setTimeout(() => {
         setLoading(false);  
       }, 1000);
-    })  
+    })
     })
   }, [language]); // se ejecuta una sola vez al renderizar el componente.
  
   return !isLoading ? (
     <div className={getBackground(wheather.wheatherCode, time.isMorning)}>
       <div className="image-container">
-          <img className="image" src={getImageByStatus(wheather.wheatherCode, time.isMorning)} alt="image" /> 
+          <img className="image" src={getImageByStatus(wheather.wheatherCode, time.isMorning)} alt="wheather-img" /> 
           <p className="time">{time.hours}:{time.minutes} {time.isAM? 'AM' : 'PM'}</p>
       </div>
       <div className="info-container">
         <div className="info">
-          <h1>{  wheather.location.city == wheather.location.country ? wheather.location.city : wheather.location.country }</h1>
+          <h1>{  wheather.location.city === wheather.location.country ? wheather.location.city : wheather.location.country }</h1>
           <h2>{  !wheather.location.region.includes(wheather.location.city) ? wheather.location.region : '' }</h2>
           <h2>{  !wheather.location.country.includes(wheather.location.city) ? wheather.location.country : ''}</h2>
           <h3>{ wheather.wheatherDescription }</h3>
@@ -139,7 +95,7 @@ function App() {
     </div>
   ) : <div className="background-loading">
     <h1>Wheather TV</h1>
-    <img className="image-loading" src={clearDay} alt="image-loading" /> 
+    <img className="image-loading" src={clearDay} alt="loading" /> 
   </div>;  
 }
 /**
@@ -179,7 +135,6 @@ function getBackground(code: number, isMorning: boolean) {
       background = 'background-gray-night';
     }
   }
-  console.log(background);
   return 'background '+ background;
 }
 
@@ -224,32 +179,11 @@ function getImageByStatus(code: number, isMorning: boolean) {
       return storm;
     }
     // raining 
-    if (code >=300 && code <=321 || code >=500 && code <=531) {
+    if ((code >=300 && code <=321) || (code >=500 && code <=531)) {
       return rain;
     }
   }
   return clouds;
 }
-
-/**
- * Generate Message by hour
- * @returns 
- */
-/*
-function generateGreetings(){
-  const currentHour = moment().hour();
-  if (currentHour >= 3 && currentHour < 12){
-      return "Good Morning";
-  } else if (currentHour >= 12 && currentHour < 15){
-      return "Good Afternoon";
-  }   else if (currentHour >= 15 && currentHour < 20){
-      return "Good Evening";
-  } else if (currentHour >= 20 && currentHour < 3){
-      return "Good Night";
-  } else {
-      return "Hello"
-  }
-
-}*/
 
 export default App;
