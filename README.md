@@ -1,6 +1,15 @@
 # Wheather TV
 
 Wheather application to samsung smart TV.
+![imagen](https://user-images.githubusercontent.com/43097082/192168360-4a7a2ef6-c190-4103-8c3b-e4c4aa90ced7.png)
+
+![imagen](https://user-images.githubusercontent.com/43097082/192168354-ab84d7db-9bea-4bbd-b299-57e1f19dbcd0.png)
+
+Tested in Samsung smart TV 2019.
+
+
+https://user-images.githubusercontent.com/43097082/192168575-ea0f1f46-0a76-497a-9f31-006aa7ec191b.mp4
+
 
 # Getting Started with Create React App
 
