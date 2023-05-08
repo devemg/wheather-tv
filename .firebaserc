@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "devemg-f044d"
+  },
+  "targets": {
+    "devemg-f044d": {
+      "hosting": {
+        "wheather-tv": [
+          "wheather-tv"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

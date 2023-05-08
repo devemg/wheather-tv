@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "target": "wheather-tv",
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
